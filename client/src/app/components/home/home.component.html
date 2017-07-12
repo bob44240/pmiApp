@@ -1,0 +1,69 @@
+<div class="jumbotron text-center">
+  <h1>Precision Medicine Initiative</h1>
+  <p class="lead"> <strong> Welcome to the PMI Participant Management Application</strong></p>
+  <div>
+    <a *ngIf="!authService.loggedIn()" routerLink="/register" class="btn btn-primary">Register</a>
+    <a *ngIf="!authService.loggedIn()" routerLink="/login" class="btn btn-default">Login</a>
+    <a *ngIf="authService.loggedIn()" routerLink="/blog" class="btn btn-success">View Participants</a>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-6 col-md-4">
+    <div class="thumbnail">
+      <img src="http://flaviapittet.com/images/mongodb.png" alt="placeholder image" width="140" height="140">
+
+      <div class="caption">
+        <h3>MongoDB</h3>
+        <p>MongoDB is a free and open-source cross-platform document-oriented database program. This NoSQL database program uses JSON-like documents with schemas.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class=thumbnail> <img src="http://www.dailey-dose.com/images/icons/express.png" alt="Generic placeholder image" width="140" height="140">
+      <div class=caption>
+        <h3>ExpressJS</h3>
+        <p>Express.js is a Node.js framework. Node.js is a platform that allows JavaScript to be used outside the Web Browsers, for creating web and network applications.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class=thumbnail> <img src="http://www.devacron.com/wp-content/uploads/2016/04/angular2_logo.png" alt="Generic placeholder image" width="140" height="140">
+      <div class=caption>
+        <h3>Angular 2</h3>
+        <p>Angular is a development platform for building mobile and desktop web applications. Ut dignissim eleifend maximus. Ut dignissim eleifend maximus. Ut dignissim eleifend.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class=thumbnail> <img src="https://cdn2.iconfinder.com/data/icons/nodejs-1/512/nodejs-512.png" alt="Generic placeholder image" width="140" height="140">
+      <div class=caption>
+        <h3>NodeJS</h3>
+        <p>Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. Node.js uses an event-driven, non-blocking I/O model that makes it lightweight and efficient.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class=thumbnail> <img src="https://obamawhitehouse.archives.gov/sites/default/files/longpage/wh_precision_medicine_header2.jpg" alt="Generic placeholder image" width="180" height="180">
+      <div class=caption>
+        <h3>President Obama</h3>
+        <p>Doctors have always recognized that every patient is unique, and doctors have always tried to tailor their treatments as best they can to individuals. You can match a blood transfusion to a blood type — that was an important discovery. What if matching a cancer cure to our genetic code was just as easy, just as standard? What if figuring out the right dose of medicine was as simple as taking our temperature?”
+          - President Obama, January 30, 2015</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-6 col-md-4">
+    <div class=thumbnail> <img src="https://image.flaticon.com/icons/svg/417/417764.svg" alt="Generic placeholder image" width="140" height="140">
+      <div class=caption>
+        <h3>Lorem Ipsum</h3>
+        <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
+      </div>
+    </div>
+  </div>
+
+</div>

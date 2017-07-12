@@ -1,0 +1,64 @@
+<div class="panel-body">
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <div class="col-md-12 col-sm-12">
+      <div class="form-group col-md-6 col-sm-6">
+        <label for="name">Name*	</label>
+        <input type="text" class="form-control input-sm" id="name" formControlName="name" placeholder="">
+      </div>
+
+      <div class="form-group col-md-6 col-sm-6">
+        <label for="email">Email*</label>
+        <input type="email" class="form-control input-sm" id="email" formControlName="email" placeholder="">
+      </div>
+
+
+      <div class="form-group col-md-12 col-sm-12">
+        <label for="exposure">Known environmental exposures*</label>
+        <textarea class="form-control input-sm" id="exposure" formControlName="exposure" rows="3"></textarea>
+      </div>
+
+      <div class="form-group col-md-12 col-sm-12">
+        <label for="mutations">Known genetic mutations*</label>
+        <textarea class="form-control input-sm" id="mutations" formControlName="mutations" rows="3"></textarea>
+      </div>
+
+      <!--<div class="form-group col-md-6 col-sm-6">-->
+        <!--<label for="siblings">Siblings*</label>-->
+        <!--<input type="text" class="form-control input-sm" id="siblings" placeholder="">-->
+      <!--</div>-->
+
+      <div class = "form-group col-md-6 col-sm-6">
+        <label for="siblings">Siblings*</label>
+        <!--<span class="help-block">Please choose the no. of months for which you would like to register</span>-->
+
+        <select class="form-control input-sm" id="siblings" formControlName="siblings">
+          <option>yes</option>
+          <option>no</option>
+        </select>
+      </div>
+
+      <div class="form-group col-md-6 col-sm-6">
+        <label for="age">Age*</label>
+        <input type="number" min="1" max="125" value="1" formControlName="age" class="form-control input-sm" id="age" placeholder="">
+      </div>
+
+      <div class="form-group col-md-6 col-sm-6">
+        <label for="country">Country*</label>
+        <input type="text" class="form-control input-sm" id="country" placeholder="">
+      </div>
+
+      <div class="form-group col-md-6 col-sm-6">
+        <label for="pincode">Pincode</label>
+        <input type="text" class="form-control input-sm" id="pincode" placeholder="">
+      </div>
+
+    </div>
+
+    <div class="col-md-12 col-sm-12">
+      <div class="form-group col-md-3 col-sm-3 " >
+        <input type="submit" class="btn btn-primary" value="Submit"/>
+        <!--<input [disabled]="!form.valid || processing || !emailValid || !usernameValid" type="submit" class="btn btn-primary" value="Submit" />-->
+      </div>
+    </div>
+  </form>
+</div>
