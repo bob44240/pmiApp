@@ -26,7 +26,7 @@ export class ParticipantService {
   }
 
   // Function to create a new blog post
-  newParticipant(part) {
+  createPart(part) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.post(this.domain + 'parts/newParticipant', part, this.options).map(res => res.json());
   }
@@ -38,33 +38,21 @@ export class ParticipantService {
   }
 
   // Function to get the blog using the id
-  getSingleBlog(id) {
+  getSinglePart(id) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.get(this.domain + 'blogs/singleBlog/' + id, this.options).map(res => res.json());
   }
 
   // Function to edit/update blog post
-  editBlog(blog) {
+  updatePart(blog) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.put(this.domain + 'blogs/updateBlog/', blog, this.options).map(res => res.json());
   }
 
   // Function to delete a blog
-  deleteBlog(id) {
+  deletePart(id) {
     this.createAuthenticationHeaders(); // Create headers
     return this.http.delete(this.domain + 'blogs/deleteBlog/' + id, this.options).map(res => res.json());
-  }
-
-  // Function to post a comment on a blog post
-  postComment(id, comment) {
-    this.createAuthenticationHeaders(); // Create headers
-    // Create blogData to pass to backend
-    const blogData = {
-      id: id,
-      comment: comment
-    }
-    return this.http.post(this.domain + 'blogs/comment', blogData, this.options).map(res => res.json());
-
   }
 
 }

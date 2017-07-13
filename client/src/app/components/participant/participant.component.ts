@@ -107,33 +107,7 @@ export class ParticipantComponent implements OnInit {
       return { 'validateUsername': true } // Return as invalid username
     }
   }
-
-  // Function to validate password
-  validatePassword(controls) {
-    // Create a regular expression
-    const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
-    // Test password against regular expression
-    if (regExp.test(controls.value)) {
-      return null; // Return as valid password
-    } else {
-      return { 'validatePassword': true } // Return as invalid password
-    }
-  }
-
-  // Funciton to ensure passwords match
-  matchingPasswords(password, confirm) {
-    return (group: FormGroup) => {
-      // Check if both fields are the same
-      if (group.controls[password].value === group.controls[confirm].value) {
-        return null; // Return as a match
-      } else {
-        return { 'matchingPasswords': true } // Return as error: do not match
-      }
-    }
-  }
-
   // Function to submit form
-
   onSubmit() {
     console.log('Submit');
     console.log(this.parts);
@@ -146,12 +120,13 @@ export class ParticipantComponent implements OnInit {
       siblings: this.form.get('siblings').value,
       email: this.form.get('email').value,
       exposure: this.form.get('exposure').value,
+      reviewed: 0,
       mutations: this.form.get('mutations').value
     }
 
     console.log(participant);
     // Function from authentication service to register user
-    this.partService.newParticipant(participant).subscribe(data => {
+    this.partService.createPart(participant).subscribe(data => {
       // Check if blog was saved to database or not
       if (!data.success) {
         this.messageClass = 'alert alert-danger'; // Return error class
@@ -206,6 +181,7 @@ export class ParticipantComponent implements OnInit {
     });
   }
 
+
   getAllParts() {
     // Function to GET all blogs from database
     this.partService.getAllParts().subscribe(data => {
@@ -214,8 +190,6 @@ export class ParticipantComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getAllParts();
-
   }
 
 }

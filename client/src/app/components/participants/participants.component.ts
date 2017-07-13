@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import {ParticipantService} from '../../services/participant.service';
-import {Contact} from '../models/contact';
+import {Participant} from '../models/participant.model';
 import {Pipe, PipeTransform} from '@angular/core';
 import {SiblingPipe} from '../../sibling.pipe';
+
 @Component({
   selector: 'app-participants',
   templateUrl: './participants.component.html',
@@ -19,7 +20,7 @@ export class ParticipantsComponent implements OnInit {
   emailValid;
   emailMessage;
   usernameValid;
-  selectedContact;
+  selectedParticipant : Participant;
   usernameMessage;
   parts;
 
@@ -28,167 +29,34 @@ export class ParticipantsComponent implements OnInit {
     private authService: AuthService,
     private partService: ParticipantService
   ) {
-    this.createForm(); // Create Angular 2 Form when component loads
+    this.parts = [{name: 'bob' }];
   }
 
+  setTextColor(part: Participant): string {
+    let color = 'red';
 
-  // Function to create participant form
-  createForm() {
-    this.form = this.formBuilder.group({
-      name: ['', Validators.compose([
-        Validators.required, // Field is required
-        Validators.minLength(5), // Minimum length is 5 characters
-        Validators.maxLength(30)
-      ])],
-      email: ['', Validators.compose([
-        Validators.required, // Field is required
-        Validators.minLength(5), // Minimum length is 5 characters
-        Validators.maxLength(30)
-      ])],
-      age: ['', Validators.compose([
-        Validators.required, // Field is required
-        Validators.minLength(3), // Minimum length is 3 characters
-        Validators.maxLength(15)
-      ])],
-      exposure: ['', Validators.compose([
-        Validators.required, // Field is required
-        Validators.minLength(3), // Minimum length is 3 characters
-        Validators.maxLength(15), // Maximum length is 15 characters
-        this.validateUsername // Custom validation
-      ])],
-      mutations: ['', Validators.compose([
-        Validators.required, // Field is required
-        Validators.minLength(3), // Minimum length is 3 characters
-        Validators.maxLength(15)
-      ])],
-      siblings: ['', Validators.compose([
-        Validators.required
-      ])]
-    });
+    if (+part.reviewed === 1) { color = 'blue'; }
+    if (+part.reviewed === 2) { color = 'green'; }
+    if (+part.reviewed === 3) { color = 'red'; }
+
+    return color;
   }
 
-  // Function to disable the registration form
-  disableForm() {
-    this.form.controls['name'].disable();
-    this.form.controls['age'].disable();
-    this.form.controls['exposure'].disable();
-    this.form.controls['mutations'].disable();
-    this.form.controls['siblings'].disable();
-    this.form.controls['email'].disable();
+  onChange(newVal){
+    this.selectedParticipant.reviewed = newVal;
+    this.partService.updatePart(this.selectedParticipant);
   }
 
-  // Function to enable the registration form
-  enableForm() {
-    this.form.controls['name'].enable();
-    this.form.controls['age'].enable();
-    this.form.controls['exposure'].enable();
-    this.form.controls['mutations'].enable();
-    this.form.controls['siblings'].enable();
-    this.form.controls['email'].enable();
+  selectParticipant(part: Participant) {
+    this.selectedParticipant = part;
   }
 
-  // Function to validate e-mail is proper format
-  validateEmail(controls) {
-    // Create a regular expression
-    const regExp = new RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
-    // Test email against regular expression
-    if (regExp.test(controls.value)) {
-      return null; // Return as valid email
-    } else {
-      return { 'validateEmail': true } // Return as invalid email
-    }
-  }
-
-  // Function to validate username is proper format
-  validateUsername(controls) {
-    // Create a regular expression
-    const regExp = new RegExp(/^[a-zA-Z0-9]+$/);
-    // Test username against regular expression
-    if (regExp.test(controls.value)) {
-      return null; // Return as valid username
-    } else {
-      return { 'validateUsername': true } // Return as invalid username
-    }
-  }
-
-  // Function to validate password
-  validatePassword(controls) {
-    // Create a regular expression
-    const regExp = new RegExp(/^(?=.*?[a-z])(?=.*?[A-Z])(?=.*?[\d])(?=.*?[\W]).{8,35}$/);
-    // Test password against regular expression
-    if (regExp.test(controls.value)) {
-      return null; // Return as valid password
-    } else {
-      return { 'validatePassword': true } // Return as invalid password
-    }
-  }
-
-  // Funciton to ensure passwords match
-  matchingPasswords(password, confirm) {
-    return (group: FormGroup) => {
-      // Check if both fields are the same
-      if (group.controls[password].value === group.controls[confirm].value) {
-        return null; // Return as a match
-      } else {
-        return { 'matchingPasswords': true } // Return as error: do not match
-      }
-    }
-  }
-
-  // Function to submit form
-
-  onSubmit() {
-    console.log('Submit');
-    console.log(this.parts);
-    this.processing = true; // Used to notify HTML that form is in processing, so that it can be disabled
-    this.disableForm(); // Disable the form
-    // Create user object form user's inputs
-    const participant = {
-      name: this.form.get('name').value, // E-mail input field
-      age: this.form.get('age').value, // Username input field
-      siblings: this.form.get('siblings').value,
-      email: this.form.get('email').value,
-      exposure: this.form.get('exposure').value,
-      mutations: this.form.get('mutations').value
-    }
-
-    console.log(participant);
-    // Function from authentication service to register user
-    this.partService.newParticipant(participant).subscribe(data => {
-      // Check if blog was saved to database or not
-      if (!data.success) {
-        this.messageClass = 'alert alert-danger'; // Return error class
-        this.message = data.message; // Return error message
-        this.processing = false; // Enable submit button
-        this.enableForm(); // Enable form
-      } else {
-        this.messageClass = 'alert alert-success'; // Return success class
-        this.message = data.message; // Return success message
-
-        // Clear form data after two seconds
-        setTimeout(() => {
-
-          this.processing = false; // Enable submit button
-          this.message = false; // Erase error/success message
-          this.form.reset(); // Reset all form fields
-          this.enableForm(); // Enable the form fields
-        }, 2000);
-      }
-    });
-
-  }
-
-
-  selectContact(contact: Contact) {
-    this.selectedContact = contact
-  }
-
-  createNewContact() {
-    const contact: Contact = {
+  createNewParticipant() {
+    const part: Participant = {
       name: '',
       email: '',
-      age: 0,
-      reviewed: 0,
+      age: 1,
+      reviewed: 1,
       siblings: false,
       lastUpdate: new Date(),
       created: new Date(),
@@ -201,12 +69,13 @@ export class ParticipantsComponent implements OnInit {
     };
 
     // By default, a newly-created contact will have the selected state.
-    this.selectContact(contact);
+    this.selectParticipant(part);
   }
+
   // Function to check if e-mail is taken
   checkEmail() {
     // Function from authentication file to check if e-mail is taken
-    console.log("Check email");
+
     this.authService.checkEmail(this.form.get('email').value).subscribe(data => {
       // Check if success true or false was returned from API
       if (!data.success) {
@@ -241,7 +110,6 @@ export class ParticipantsComponent implements OnInit {
   getAllParts() {
     // Function to GET all blogs from database
     this.partService.getAllParts().subscribe(data => {
-      console.log("Here")
       this.parts = data.participants; // Assign array to use in HTML
       console.log(this.parts);
     });
